@@ -1,18 +1,11 @@
 import logging
 import os
 import time
-from email.policy import default
-from http import HTTPStatus
 from logging.handlers import RotatingFileHandler
-from pprint import pprint
-from tkinter.messagebox import NO
-from urllib import response
-from urllib.error import HTTPError
 
 import requests
 import telegram
 from dotenv import load_dotenv
-from telegram import bot
 
 load_dotenv()
 
@@ -26,11 +19,11 @@ logging.basicConfig(
     filename='hw.log',
     filemode='w',
     format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
-    )
+)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-handler = RotatingFileHandler('hw_logger.log', maxBytes=50000000, backupCount=5, encoding='utf-8')
-
+handler = RotatingFileHandler('hw_logger.log', maxBytes=50000000, \
+                               backupCount=5, encoding='utf-8')
 logger.addHandler(handler)
 
 RETRY_TIME = 600
@@ -46,7 +39,7 @@ HOMEWORK_STATUSES = {
 
 
 def send_message(bot, message):
-    """Отправка сообщения в телеграмм"""
+    """Отправка сообщения в телеграмм."""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
     except Exception as er:
@@ -54,7 +47,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(current_timestamp):
-    """Отправка запроса к сайту Яндекс Практикум"""
+    """Отправка запроса к сайту Яндекс Практикум."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     try:
@@ -65,10 +58,12 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
+    """Проверка овтета API."""
     response.get('homework', f'Не удалось найти ключ homeworks в {response}')
 
 
 def parse_status(homework):
+    """Сатус домашней работы."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
     if homework == []:
@@ -77,7 +72,7 @@ def parse_status(homework):
         KeyError('Домашняя работа не обнаружена')
 
     if homework_status not in HOMEWORK_STATUSES:
-        raise KeyError('Неизвестный статус домашней работы') 
+        raise KeyError('Неизвестный статус домашней работы')
 
     verdict = HOMEWORK_STATUSES[homework_status]
 
@@ -96,6 +91,7 @@ def check_tokens():
             logger.critical(f'Отсутствует переменная окружения {key}.')
             return False
     return True
+
 
 def main():
     """Основная логика работы бота."""
