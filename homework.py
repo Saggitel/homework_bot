@@ -22,8 +22,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-handler = RotatingFileHandler('hw_logger.log', maxBytes=50000000, \
-                               backupCount=5, encoding='utf-8')
+handler = RotatingFileHandler('hw_logger.log', maxBytes=50000000,
+                              backupCount=5, encoding='utf-8')
 logger.addHandler(handler)
 
 RETRY_TIME = 600
