@@ -84,8 +84,9 @@ def parse_status(homework):
     if homework == []:
         return None
     if not homework_name:
-        KeyError('Домашняя работа не обнаружена')
-
+        raise KeyError('Домашняя работа не обнаружена')
+    if 'homework_name' not in homework:
+        raise KeyError('Отсутсвует ключ')
     if homework_status not in HOMEWORK_STATUSES:
         raise KeyError('Неизвестный статус домашней работы')
 
