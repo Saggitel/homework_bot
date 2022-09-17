@@ -68,11 +68,11 @@ def check_response(response):
         raise Exception('Dict is Empty')
     if 'homeworks' not in response:
         raise Exception('KeyError homeworks')
+    if 'homework_name' not in homework:
+        raise KeyError('Нет ключа "homework_name": homework = {homework}.')
     if type(response.get('homeworks')) is not list:
         raise TypeError('homeworks is not list')
     homework = response.get('homeworks')
-    if 'homework_name' not in homework:
-        raise KeyError('Нет ключа "homework_name": homework = {homework}.')
     if homework == []:
         return {}
     else:
