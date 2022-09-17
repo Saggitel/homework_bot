@@ -2,6 +2,7 @@ import logging
 import os
 import time
 from logging.handlers import RotatingFileHandler
+from http import HTTPStatus
 
 import requests
 import telegram
@@ -53,13 +54,27 @@ def get_api_answer(current_timestamp):
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
     except Exception as err:
-        raise f'Ошибка при запросе: {params} к API: {err}.'
+        raise f'Ошибка при запросе к API: {err}.'
+    if response.status_code !=HTTPStatus.OK:
+        raise f'Ошибка при запросе к API {response.status_code}: {err}.'
     return response.json()
 
 
 def check_response(response):
     """Проверка овтета API."""
-    response.get('homework', f'Не удалось найти ключ homeworks в {response}')
+    if type(response) is not dict:
+        raise TypeError('response is not dict')
+    if response == {}:
+        raise Exception('Dict is Empty')
+    if 'homeworks' not in response:
+        raise Exception('KeyError homeworks')
+    if type(response.get('homeworks')) is not list:
+        raise TypeError('homeworks is not list')
+    homework = response.get('homeworks')
+    if homework == []:
+        return {}
+    else:
+        return homework[0]
 
 
 def parse_status(homework):
