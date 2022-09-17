@@ -68,8 +68,6 @@ def check_response(response):
         raise Exception('Dict is Empty')
     if 'homeworks' not in response:
         raise Exception('KeyError homeworks')
-    if 'homework_name' not in homework:
-        raise KeyError('Нет ключа "homework_name": homework = {homework}.')
     if type(response.get('homeworks')) is not list:
         raise TypeError('homeworks is not list')
     homework = response.get('homeworks')
@@ -127,6 +125,8 @@ def main():
             logging.error(message)
             bot.send_message(TELEGRAM_CHAT_ID, message)
             time.sleep(RETRY_TIME)
+        except 'homework_name' not in homework:
+            raise KeyError('Нет ключа "homework_name": homework = {homework}.')
 
 
 if __name__ == '__main__':
