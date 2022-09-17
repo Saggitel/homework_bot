@@ -71,6 +71,8 @@ def check_response(response):
     if type(response.get('homeworks')) is not list:
         raise TypeError('homeworks is not list')
     homework = response.get('homeworks')
+    if 'homework_name' not in homework:
+        raise KeyError('Нет ключа "homework_name": homework = {homework}.')
     if homework == []:
         return {}
     else:
@@ -85,8 +87,6 @@ def parse_status(homework):
         return None
     if not homework_name:
         raise KeyError('Домашняя работа не обнаружена')
-    if 'homework_name' not in homework:
-        raise KeyError('Нет ключа "homework_name": homework = {homework}.')
     if homework_status not in HOMEWORK_STATUSES:
         raise KeyError('Неизвестный статус домашней работы')
 
