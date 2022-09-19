@@ -79,8 +79,8 @@ def check_response(response):
 
 def parse_status(homework):
     """Сатус домашней работы."""
-    homework_name = homework.get('homework_name')
-    homework_status = homework.get('status')
+    homework_name = homework['homework_name']
+    homework_status = homework['status']
     if homework == []:
         return None
     if not homework_name:
