@@ -74,7 +74,7 @@ def check_response(response):
     if homework == []:
         return {}
     else:
-        return homework[0]
+        return homework[1]
 
 
 def parse_status(homework):
