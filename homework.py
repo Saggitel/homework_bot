@@ -62,9 +62,9 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверка овтета API."""
-    homeworks = response.get('homeworks')
     if type(response) is not dict:
         raise TypeError('response is not dict')
+    homeworks = response.get('homeworks')
     if not 'homeworks':
         raise Exception('KeyError homeworks')
     if not isinstance(homeworks, list):
