@@ -62,24 +62,19 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверка овтета API."""
+    homeworks = response.get('homeworks')
     if type(response) is not dict:
         raise TypeError('response is not dict')
-    if response == {}:
-        raise Exception('Dict is Empty')
-    if 'homeworks' not in response:
+    if not 'homeworks':
         raise Exception('KeyError homeworks')
-    if type(response.get('homeworks')) is not list:
+    if not isinstance(homeworks, list):
         raise TypeError('homeworks is not list')
-    homework = response.get('homeworks')
-    if homework == []:
-        return {}
-    else:
-        return homework[1]
+    return homeworks
 
 
 def parse_status(homework):
     """Сатус домашней работы."""
-    homework_name = homework['homework_name']
+    homework_name = homework[0]
     homework_status = homework['status']
     if homework == []:
         return None
