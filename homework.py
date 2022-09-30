@@ -113,7 +113,6 @@ def main():
         filemode='w',
         format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
     )
-    
     if not check_tokens():
         return
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
