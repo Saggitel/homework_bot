@@ -60,7 +60,6 @@ def get_api_answer(current_timestamp):
         print("N'est pas JSON")
 
 
-
 def check_response(response):
     """Проверка овтета API."""
     if not isinstance(response, dict):
@@ -112,7 +111,8 @@ def main():
     level=logging.DEBUG,
     filename='hw.log',
     filemode='w',
-    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',)
+    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
+    )
     if not check_tokens():
         return
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
