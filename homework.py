@@ -108,11 +108,12 @@ def check_tokens():
 def main():
     """Основная логика работы бота."""
     logging.basicConfig(
-                level=logging.DEBUG,
-                filename='hw.log',
-                filemode='w',
-                format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
-                )
+        level=logging.DEBUG,
+        filename='hw.log',
+        filemode='w',
+        format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
+    )
+    
     if not check_tokens():
         return
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
