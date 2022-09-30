@@ -4,7 +4,6 @@ import time
 from logging.handlers import RotatingFileHandler
 from http import HTTPStatus
 from json.decoder import JSONDecodeError
-from simplejson.errors import JSONDecodeError
 
 import requests
 import telegram
@@ -39,7 +38,7 @@ def send_message(bot, message):
     """Отправка сообщения в телеграмм."""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
-        logging.info(f'Начинаем отправку сообщения.')
+        logging.info('Начинаем отправку сообщения.')
     except Exception as er:
         raise f'Сообщение не отправлено ошибка: {er}, {type(er)}'
 
@@ -64,7 +63,7 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверка овтета API."""
-    if not isinstance (response, dict ):
+    if not isinstance(response, dict):
         raise TypeError('response is not dict')
     homeworks = response.get('homeworks')
     if 'homeworks' not in response or 'current_date' not in response:
@@ -113,8 +112,7 @@ def main():
     level=logging.DEBUG,
     filename='hw.log',
     filemode='w',
-    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
-)
+    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',)
     if not check_tokens():
         return
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
@@ -134,6 +132,7 @@ def main():
         except 'homework_name' not in homework:
             raise KeyError('Нет ключа "homework_name": homework = {homework}.')
         time.sleep(TELEGRAM_RETRY_TIME)
+
 
 if __name__ == '__main__':
     main()
