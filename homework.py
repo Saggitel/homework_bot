@@ -48,7 +48,6 @@ def get_api_answer(current_timestamp):
     params = {'from_date': timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
-        logging.info(response)
     except Exception as err:
         raise f'Ошибка при запросе к API: {err}.'
     if response.status_code != HTTPStatus.OK:
