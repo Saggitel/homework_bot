@@ -53,7 +53,7 @@ def get_api_answer(current_timestamp):
         raise f'Ошибка при запросе к API: {err}.'
     if response.status_code != HTTPStatus.OK:
         raise f'Ошибка при запросе к API {response.status_code}.'
-    return (response.json())
+    return response.json()
 
 
 def check_response(response):
