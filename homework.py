@@ -54,10 +54,7 @@ def get_api_answer(current_timestamp):
         raise f'Ошибка при запросе к API: {err}.'
     if response.status_code != HTTPStatus.OK:
         raise f'Ошибка при запросе к API {response.status_code}.'
-    try:
-        return(response.json())
-    except JSONDecodeError:
-        return("N'est pas JSON")
+    return (response.json())
 
 
 def check_response(response):
@@ -74,8 +71,8 @@ def check_response(response):
 
 def parse_status(homework):
     """Сатус домашней работы."""
-    homework_name = homework['homework_name']
-    homework_status = homework['status']
+    homework_name = homework.get('homework_name')
+    homework_status = homework.get('status')
     if homework == []:
         return None
     if homework_status == []:
