@@ -16,10 +16,10 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 logging.basicConfig(
-        level=logging.DEBUG,
-        filename='hw.log',
-        filemode='w',
-        format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
+    level=logging.DEBUG,
+    filename='hw.log',
+    filemode='w',
+    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
 )
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
