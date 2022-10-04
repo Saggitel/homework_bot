@@ -45,7 +45,7 @@ def send_message(bot, message):
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.info('Начинаем отправку сообщения.')
-    except TelegramError as er:
+    except Exception as TelegramError:
         raise f'Сообщение не отправлено ошибка: {er}, {type(er)}'
 
 
@@ -54,7 +54,11 @@ def get_api_answer(current_timestamp):
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     try:
-        response = requests.get(endpoints.ENDPOINT, headers=HEADERS, params=params)
+        response = requests.get(
+            endpoints.ENDPOINT, 
+            headers=HEADERS, 
+            params=params
+            )
         logging.info(response)
     except Exception as err:
         raise f'Ошибка при запросе к API: {err}.'
@@ -87,7 +91,7 @@ def parse_status(homework):
     if homework_status == []:
         return None
     if homework_status not in HOMEWORK_VERDICT:
-        raise KeyError('Неизвестный статус домашней работы')   
+        raise KeyError('Неизвестный статус домашней работы')
     if 'homework_name' not in homework:
         raise KeyError(
             'Отсутствуют ключ "homework_name" : homework = {homework}.')
@@ -118,7 +122,7 @@ def main():
     filename='hw.log',
     filemode='w',
     format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
-)   
+    )
     if not check_tokens():
         return
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
