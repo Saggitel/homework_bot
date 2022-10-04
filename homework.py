@@ -45,7 +45,7 @@ def send_message(bot, message):
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.info('Начинаем отправку сообщения.')
     except Exception as TelegramError:
-        raise (f'Сообщение не отправлено ошибка:' 
+        raise (f'Сообщение не отправлено ошибка:'
                f'{TelegramError}, {type(TelegramError)}')
 
 
