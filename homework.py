@@ -1,10 +1,18 @@
 import logging
 import os
 import time
-from logging.handlers import RotatingFileHandler
 from http import HTTPStatus
+from logging.handlers import RotatingFileHandler
 
 import requests
+
+from . import endpoints
+
+try:
+    from simplejson.errors import JSONDecodeError
+except ImportError:
+    from json.decoder import JSONDecodeError
+
 import telegram
 from dotenv import load_dotenv
 
@@ -15,12 +23,6 @@ PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    filename='hw.log',
-    filemode='w',
-    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
-)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 handler = RotatingFileHandler('hw_logger.log', maxBytes=50000000,
@@ -28,7 +30,6 @@ handler = RotatingFileHandler('hw_logger.log', maxBytes=50000000,
 logger.addHandler(handler)
 
 TELEGRAM_RETRY_TIME = 600
-ENDPOINT = os.getenv('ENDPOINT')
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
 
@@ -44,7 +45,7 @@ def send_message(bot, message):
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.info('Начинаем отправку сообщения.')
-    except Exception as er:
+    except TelegramError as er:
         raise f'Сообщение не отправлено ошибка: {er}, {type(er)}'
 
 
@@ -53,12 +54,16 @@ def get_api_answer(current_timestamp):
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     try:
-        response = requests.get(ENDPOINT, headers=HEADERS, params=params)
+        response = requests.get(endpoints.ENDPOINT, headers=HEADERS, params=params)
+        logging.info(response)
     except Exception as err:
         raise f'Ошибка при запросе к API: {err}.'
     if response.status_code != HTTPStatus.OK:
         raise f'Ошибка при запросе к API {response.status_code}.'
-    return response.json()
+    try:
+        return response.json()
+    except JSONDecodeError:
+        return ("N'est pas JSON")
 
 
 def check_response(response):
@@ -82,7 +87,7 @@ def parse_status(homework):
     if homework_status == []:
         return None
     if homework_status not in HOMEWORK_VERDICT:
-        raise KeyError('Неизвестный статус домашней работы')
+        raise KeyError('Неизвестный статус домашней работы')   
     if 'homework_name' not in homework:
         raise KeyError(
             'Отсутствуют ключ "homework_name" : homework = {homework}.')
@@ -108,6 +113,12 @@ def check_tokens():
 
 def main():
     """Основная логика работы бота."""
+    logging.basicConfig(
+    level=logging.DEBUG,
+    filename='hw.log',
+    filemode='w',
+    format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
+)   
     if not check_tokens():
         return
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
