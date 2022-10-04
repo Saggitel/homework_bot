@@ -46,7 +46,9 @@ def send_message(bot, message):
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.info('Начинаем отправку сообщения.')
     except Exception as TelegramError:
-        raise f'Сообщение не отправлено ошибка: {TelegramError}, {type(TelegramError)}'
+        raise (
+        f'Сообщение не отправлено ошибка: {TelegramError}, {type(TelegramError)}'
+    )
 
 
 def get_api_answer(current_timestamp):
@@ -118,10 +120,10 @@ def check_tokens():
 def main():
     """Основная логика работы бота."""
     logging.basicConfig(
-        level=logging.DEBUG,
-        filename='hw.log',
-        filemode='w',
-        format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
+            level=logging.DEBUG,
+            filename='hw.log',
+            filemode='w',
+            format='%(asctime)s, %(levelname)s, %(message)s, %(name)s',
     )
     if not check_tokens():
         return
