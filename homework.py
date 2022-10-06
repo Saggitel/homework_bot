@@ -46,7 +46,7 @@ def send_message(bot, message):
         logging.info('Начинаем отправку сообщения.')
     except Exception as TelegramError:
         return (f'Сообщение не отправлено ошибка:'
-               f'{TelegramError}, {type(TelegramError)}')
+                f'{TelegramError}, {type(TelegramError)}')
 
 
 def get_api_answer(current_timestamp):
@@ -56,10 +56,10 @@ def get_api_answer(current_timestamp):
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
         logging.info(response)
-    except Exception as err:
-        raise Exception ('Ошибка при запросе к API: {err}.')
+    except Exception:
+        raise Exception('Ошибка при запросе к API')
     if response.status_code != HTTPStatus.OK:
-        raise Exception ('Ошибка при запросе к API {response.status_code}.')
+        raise Exception('Ошибка при запросе к API {response.status_code}.')
     try:
         return response.json()
     except JSONDecodeError:
