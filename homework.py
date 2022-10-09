@@ -28,7 +28,7 @@ handler = RotatingFileHandler('hw_logger.log', maxBytes=50000000,
 logger.addHandler(handler)
 
 TELEGRAM_RETRY_TIME = 600
-ENDPOINT = os.getenv('ENDPOINT')
+ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
 
